@@ -54,17 +54,20 @@ export default class SectionList extends Component {
     //UIManager.findSubviewIn(e.target, rect, viewTag => {
       //this.onSectionSelect(view, true);
     //})
-    const targetY = ev.pageY;
-    const { y, width, height } = this.measure;
-    const index = (Math.floor(ev.locationY / height));
-    if (index >= this.props.sections.length) {
+    
+    let targetY = ev.pageY;
+    const { y, height } = this.measure;
+    if(!y || targetY < y){
       return;
     }
-
+    let index = Math.floor((targetY - y) / height);
+    index = Math.min(index, this.props.sections.length - 1);
     if (this.lastSelectedIndex !== index && this.props.data[this.props.sections[index]].length) {
       this.lastSelectedIndex = index;
       this.onSectionSelect(this.props.sections[index], true);
     }
+    
+    
   }
 
   fixSectionItemMeasure() {
